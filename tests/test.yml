@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: True
+  vars:
+    logrotate_scripts:
+      - name: logrotate
+        paths:
+          - /var/log/yum.log
+        options:
+          - daily
+          - size 30k
+          - rotate 7
+          - missingok
+          - compress
+          - delaycompress
+          - copytruncate
+
+      - name: logrotate2
+        paths:
+          - /var/log/cron
+          - /var/log/maillog
+          - /var/log/message
+          - /var/log/secure
+          - /var/log/spooler
+        options:
+          - missingok
+          - sharedscripts
+        postrotate:
+          - /bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
