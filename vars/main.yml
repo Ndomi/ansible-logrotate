@@ -5,7 +5,7 @@ logrotate_scripts:
     paths:
       - /var/log/yum.log
     options:
-      - daily
+      - yearly
       - size 30k
       - rotate 7
       - missingok
